@@ -1,11 +1,10 @@
-const Pet = require('../models/pet');
+const Pet = require("../models/pet");
 
-module.exports = (app) => {
-
+module.exports = app => {
   /* GET home page. */
-  app.get('/', (req, res) => {
-    Pet.find().exec((err, pets) => {
-      res.render('pets-index', { pets: pets });    
+  app.get("/", (req, res) => {
+    Pet.paginate().then(results => {
+      res.render("pets-index", { pets: results.docs });
     });
   });
-}
+};
