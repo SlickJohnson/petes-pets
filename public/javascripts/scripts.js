@@ -18,6 +18,11 @@ if (document.querySelector("#new-pet")) {
         alert.classList.add("alert-warning");
         alert.textContent = "Oooooooops, s0me2ing wnet wroung. Plz tr1 agunm.";
         alert.style.display = "block";
+
+        setTimeout(() => {
+          alert.style.display = "none";
+          alert.classList.remove("alert-warning");
+        }, 3000);
       });
   });
 }
