@@ -123,15 +123,27 @@ module.exports = app => {
 
     const token = req.body.stripeToken;
 
-    const charge = stripe.charges
-      .create({
-        amount: 999,
-        currency: "usd",
-        desciption: "Exmaple charge",
-        source: token
-      })
-      .then(() => {
+    let petId = req.body.petId || req.params.id;
+
+    Pet.findById(petId).exec((err, pet) => {
+      if (err) {
+        console.log("Error: " + err);
         res.redirect(`/pets/${req.params.id}`);
-      });
+      }
+
+      const charge = stripe.charges
+        .create({
+          amount: pet.price * 100,
+          currency: "usd",
+          description: `Purchased ${pet.name}, ${pet.name}, ${pet.species}`,
+          source: token
+        })
+        .then(chg => {
+          res.redirect(`/pets/${req.params.id}`);
+        })
+        .catch(err => {
+          console.log("Error: " + err);
+        });
+    });
   });
 };
