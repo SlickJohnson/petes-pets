@@ -115,4 +115,23 @@ module.exports = app => {
       }
     );
   });
+
+  app.post("/pets/:id/purchase", (req, res) => {
+    // console.log(`purchase body: ${req.body}`);
+
+    var stripe = require("stripe")(process.env.PRIVATE_STRIPE_API_KEY);
+
+    const token = req.body.stripeToken;
+
+    const charge = stripe.charges
+      .create({
+        amount: 999,
+        currency: "usd",
+        desciption: "Exmaple charge",
+        source: token
+      })
+      .then(() => {
+        res.redirect(`/pets/${req.params.id}`);
+      });
+  });
 };
