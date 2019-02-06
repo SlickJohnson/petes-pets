@@ -16,6 +16,18 @@ const app = express();
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/petes-pets");
 
+const nodemailer = require("nodemailer");
+const mg = require("nodemailer-mailgun-transport");
+
+const auth = {
+  auth: {
+    api_key: process.env.MAILGUN_API_KEY,
+    domain: process.env.EMAIL_DOMAIN
+  }
+};
+
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
+
 app.locals.PUBLIC_STRIPE_API_KEY = process.env.PUBLIC_STRIPE_API_KEY;
 
 // view engine setup
