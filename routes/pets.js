@@ -117,7 +117,7 @@ module.exports = app => {
   });
 
   app.post("/pets/:id/purchase", (req, res) => {
-    // console.log(`purchase body: ${req.body}`);
+    console.log(`purchase body: ${req.body}`);
 
     var stripe = require("stripe")(process.env.PRIVATE_STRIPE_API_KEY);
 
@@ -125,25 +125,35 @@ module.exports = app => {
 
     let petId = req.body.petId || req.params.id;
 
-    Pet.findById(petId).exec((err, pet) => {
-      if (err) {
-        console.log("Error: " + err);
-        res.redirect(`/pets/${req.params.id}`);
-      }
-
-      const charge = stripe.charges
-        .create({
-          amount: pet.price * 100,
-          currency: "usd",
-          description: `Purchased ${pet.name}, ${pet.name}, ${pet.species}`,
-          source: token
-        })
-        .then(chg => {
-          res.redirect(`/pets/${req.params.id}`);
-        })
-        .catch(err => {
+    Pet.findById(petId)
+      .exec((err, pet) => {
+        if (err) {
           console.log("Error: " + err);
-        });
-    });
+          res.redirect(`/pets/${req.params.id}`);
+        }
+
+        const charge = stripe.charges
+          .create({
+            amount: pet.price * 100,
+            currency: "usd",
+            description: `Purchased ${pet.name}, ${pet.name}, ${pet.species}`,
+            source: token
+          })
+          .then(chg => {
+            res.redirect(`/pets/${req.params.id}`);
+            // pet.save(function(err) {
+            //   pet[purchased_at] = Date.now();
+            //   pet.save()
+            //   if (!err) {
+
+            //   } else {
+            //     console.log(`Error: could not save pet ${pet.name}`);
+            //   }
+            // });
+          });
+      })
+      .catch(err => {
+        console.log("Error: " + err);
+      });
   });
 };

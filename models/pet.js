@@ -19,7 +19,8 @@ const PetSchema = new Schema(
     avatarUrl: { type: String, required: true },
     favoriteFood: { type: String, required: true },
     description: { type: String, required: true },
-    price: { type: Number, required: true }
+    price: { type: Number, required: true },
+    purchased_at: { type: Date }
   },
   {
     timestamps: true

@@ -10,7 +10,8 @@ module.exports = [
       "http://www.dogbreedplus.com/dog_breeds/images/cute-rottweiler-puppy.jpg",
     description:
       "Rex is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: 1549398663888
   },
   {
     name: "Fido",
@@ -22,7 +23,8 @@ module.exports = [
       "https://www.collinsdictionary.com/images/thumb/greyhound_21701074_250.jpg",
     description:
       "Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: null
   },
   {
     name: "Rolfe",
@@ -35,7 +37,8 @@ module.exports = [
       "http://www.vrcpitbull.com/wp-content/uploads/2011/02/VAMPVAMP%E2%80%A2.jpg",
     description:
       "Rolfe is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: null
   },
   {
     name: "Princhi",
@@ -48,7 +51,8 @@ module.exports = [
       "https://upload.wikimedia.org/wikipedia/commons/2/2c/West_Highland_White_Terrier_Krakow.jpg",
     description:
       "Princhi is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: null
   },
   {
     name: "Mr. Fluffles",
@@ -59,7 +63,8 @@ module.exports = [
     picUrlSq: "http://www.caninest.com/images/black-poodle.jpg",
     description:
       "Mr. Fluffles is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: null
   },
   {
     name: "Santa's Little Helper",
@@ -70,7 +75,8 @@ module.exports = [
     picUrlSq: "http://via.placeholder.com/250x250",
     description:
       "Santa's Little Helper is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: null
   },
   {
     name: "Alf",
@@ -81,7 +87,8 @@ module.exports = [
     picUrlSq: "http://via.placeholder.com/250x250",
     description:
       "Alf is an alien and he's a good alien who loves to play and hang out with his owners. He also likes to nap and enjoys eating cats",
-    price: 10
+    price: 10,
+    purchased_at: null
   },
   {
     name: "Bubba",
@@ -92,6 +99,7 @@ module.exports = [
     picUrlSq: "http://via.placeholder.com/250x250",
     description:
       "Bubba is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food",
-    price: 10
+    price: 10,
+    purchased_at: null
   }
 ];
