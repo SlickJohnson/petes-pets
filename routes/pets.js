@@ -31,6 +31,19 @@ const client = new Upload(process.env.S3_BUCKET, {
   ]
 });
 
+// MAILGUN
+const nodemailer = require("nodemailer");
+const mg = require("nodemailer-mailgun-transport");
+
+const auth = {
+  auth: {
+    api_key: process.env.MAILGUN_API_KEY,
+    domain: process.env.EMAIL_DOMAIN
+  }
+};
+
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
+
 // PET ROUTES
 module.exports = app => {
   // INDEX PET => index.js
@@ -117,7 +130,7 @@ module.exports = app => {
   });
 
   app.post("/pets/:id/purchase", (req, res) => {
-    console.log(`purchase body: ${req.body}`);
+    console.log(req.body);
 
     var stripe = require("stripe")(process.env.PRIVATE_STRIPE_API_KEY);
 
@@ -125,35 +138,53 @@ module.exports = app => {
 
     let petId = req.body.petId || req.params.id;
 
-    Pet.findById(petId)
-      .exec((err, pet) => {
-        if (err) {
-          console.log("Error: " + err);
-          res.redirect(`/pets/${req.params.id}`);
-        }
-
-        const charge = stripe.charges
-          .create({
-            amount: pet.price * 100,
-            currency: "usd",
-            description: `Purchased ${pet.name}, ${pet.name}, ${pet.species}`,
-            source: token
-          })
-          .then(chg => {
-            res.redirect(`/pets/${req.params.id}`);
-            // pet.save(function(err) {
-            //   pet[purchased_at] = Date.now();
-            //   pet.save()
-            //   if (!err) {
-
-            //   } else {
-            //     console.log(`Error: could not save pet ${pet.name}`);
-            //   }
-            // });
-          });
-      })
-      .catch(err => {
+    Pet.findById(petId).exec((err, pet) => {
+      if (err) {
         console.log("Error: " + err);
-      });
+        res.redirect(`/pets/${req.params.id}`);
+      }
+      console.log(pet);
+      const charge = stripe.charges
+        .create({
+          amount: pet.price * 100,
+          currency: "usd",
+          description: `Purchased ${pet.name}, ${pet.name}, ${pet.species}`,
+          source: token
+        })
+        .then(chg => {
+          pet.purchased_at = Date.now();
+          pet.save();
+
+          // SEND EMAIL
+          const user = {
+            email: req.body.stripeEmail,
+            amount: chg.amount / 100,
+            petName: pet.name
+          };
+
+          nodemailerMailgun
+            .sendMail({
+              from: "no-reply@example.com",
+              to: user.email,
+              subject: "Hey you, awesome mail you get there!",
+              template: {
+                name: "email.handlebars",
+                engine: "handlebars",
+                context: user
+              }
+            })
+            .then(info => {
+              console.log("Response: " + info);
+              res.redirect(`/pets/${req.params.id}`);
+            })
+            .catch(err => {
+              console.log("Error: " + err);
+              res.redirect(`/pets/${req.params.id}`);
+            });
+        })
+        .catch(err => {
+          console.log("Error: " + err);
+        });
+    });
   });
 };
