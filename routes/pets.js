@@ -83,7 +83,11 @@ module.exports = app => {
   // SHOW PET
   app.get("/pets/:id", (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
-      res.render("pets-show", { pet: pet });
+      if (req.header("content-type") == "application/json") {
+        return res.json({ pets: pets });
+      } else {
+        res.render("pets-show", { pet: pet });
+      }
     });
   });
 
